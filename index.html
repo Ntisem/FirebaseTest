@@ -1,0 +1,58 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase.js"></script>
+
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAvktLHU8m5PVksfdNoqHAwN_-77gTg1yg",
+            authDomain: "fir-test-cc34d.firebaseapp.com",
+            databaseURL: "https://fir-test-cc34d.firebaseio.com",
+            projectId: "fir-test-cc34d",
+            storageBucket: "fir-test-cc34d.appspot.com",
+            messagingSenderId: "731035350296",
+            appId: "1:731035350296:web:a1bbeb13a4a21e5ca99a6d"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        function writeData() {
+            firebase.database().ref('users').set({
+                name: document.getElementById('nameField').value,
+                age: document.getElementById('ageField').value,
+                phone: document.getElementById('phoneField').value,
+                email: document.getElementById('emailField').value
+            });
+            getData();
+        }
+
+        function getData() {
+            firebase.database().ref('/').once('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    document.getElementById('displaydata').innerHTML = childData['name'] + ' , ' + childData['age'] + ' , ' + childData['phone'] + ' , ' + childData['email'];
+                })
+
+            })
+        }
+    </script>
+    <h1>User Database</h1>
+    <input type="text" placeholder="Name" id="nameField">
+    <input type="text" placeholder="Age" id="ageField">
+    <input type="tel" placeholder="Phone" id="phoneField">
+    <input type="email" placeholder="email" id="emailField">
+    <button onclick="writeData()">Submit</button>
+    <p id="displaydata"></p>
+</body>
+
+</html>
